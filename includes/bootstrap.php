@@ -28,6 +28,13 @@ function shurloc_checkout_tools_bootstrap(): void {
 	);
 
 	$autoloader->register();
+
+	/**
+	 * Tariff fees.
+	 */
+
+	$tariff_fees = new Shurloc_Tariff_Fees();
+	$tariff_fees->register();
 }
 
 add_action(
