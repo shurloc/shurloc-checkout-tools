@@ -138,8 +138,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		$this->assertSame(
 			array(
 				array(
-					'name'   => 'Raw material import tariff',
-					'amount' => 3.00,
+					'name'    => 'Raw material import tariff',
+					'amount'  => 3.00,
+					'taxable' => false,
 				),
 			),
 			$this->woocommerce->cart->get_added_fees()
@@ -172,8 +173,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		$this->assertSame(
 			array(
 				array(
-					'name'   => 'Sefar Mesh Tariff',
-					'amount' => 9.00,
+					'name'    => 'Sefar Mesh Tariff',
+					'amount'  => 9.00,
+					'taxable' => false,
 				),
 			),
 			$this->woocommerce->cart->get_added_fees()
@@ -212,8 +214,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		$this->assertSame(
 			array(
 				array(
-					'name'   => 'Sefar Mesh Tariff',
-					'amount' => 9.00,
+					'name'    => 'Sefar Mesh Tariff',
+					'amount'  => 9.00,
+					'taxable' => false,
 				),
 			),
 			$this->woocommerce->cart->get_added_fees()
@@ -256,8 +259,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		$this->assertSame(
 			array(
 				array(
-					'name'   => 'Raw material import tariff',
-					'amount' => 4.50,
+					'name'    => 'Raw material import tariff',
+					'amount'  => 4.50,
+					'taxable' => false,
 				),
 			),
 			$this->woocommerce->cart->get_added_fees()
@@ -316,12 +320,14 @@ final class ShurlocTariffFeesTest extends TestCase {
 		$this->assertSame(
 			array(
 				array(
-					'name'   => 'Raw material import tariff',
-					'amount' => 4.50,
+					'name'    => 'Raw material import tariff',
+					'amount'  => 4.50,
+					'taxable' => false,
 				),
 				array(
-					'name'   => 'Sefar Mesh Tariff',
-					'amount' => 18.00,
+					'name'    => 'Sefar Mesh Tariff',
+					'amount'  => 18.00,
+					'taxable' => false,
 				),
 			),
 			$this->woocommerce->cart->get_added_fees()
@@ -354,8 +360,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		$this->assertSame(
 			array(
 				array(
-					'name'   => 'Raw material import tariff',
-					'amount' => 2.40,
+					'name'    => 'Raw material import tariff',
+					'amount'  => 2.40,
+					'taxable' => false,
 				),
 			),
 			$this->woocommerce->cart->get_added_fees()
