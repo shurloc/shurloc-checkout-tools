@@ -38,6 +38,13 @@ function shurloc_checkout_tools_bootstrap(): void {
 
 	$tariff_tooltips = new Shurloc_Tariff_Tooltips();
 	$tariff_tooltips->register();
+
+	/**
+	 * Payment processing fee.
+	 */
+
+	$payment_processing_fee = new Shurloc_Payment_Processing_Fee();
+	$payment_processing_fee->register();
 }
 
 add_action(

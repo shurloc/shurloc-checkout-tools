@@ -42,5 +42,7 @@ require_once __DIR__ . '/stubs/woocommerce-functions.php';
 
 require_once dirname( __DIR__ ) . '/includes/constants.php';
 
+require_once __DIR__ . '/doubles/class-shurloc-test-fee.php';
 require_once __DIR__ . '/doubles/class-shurloc-test-cart.php';
+require_once __DIR__ . '/doubles/class-shurloc-test-session.php';
 require_once __DIR__ . '/doubles/class-shurloc-test-woocommerce.php';

@@ -22,9 +22,17 @@ final class Shurloc_Test_WooCommerce {
 	public Shurloc_Test_Cart $cart;
 
 	/**
+	 * Test session.
+	 *
+	 * @var Shurloc_Test_Session
+	 */
+	public Shurloc_Test_Session $session;
+
+	/**
 	 * Creates the test WooCommerce instance.
 	 */
 	public function __construct() {
-		$this->cart = new Shurloc_Test_Cart();
+		$this->cart    = new Shurloc_Test_Cart();
+		$this->session = new Shurloc_Test_Session();
 	}
 }
