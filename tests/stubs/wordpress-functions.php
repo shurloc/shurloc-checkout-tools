@@ -70,3 +70,55 @@ if ( ! function_exists( 'trailingslashit' ) ) {
 		) . '/';
 	}
 }
+
+
+/**
+ * Registers a WordPress action.
+ *
+ * @param string   $hook          Hook name.
+ * @param callable $callback      Callback.
+ * @param int      $priority      Hook priority.
+ * @param int      $accepted_args Number of accepted arguments.
+ */
+function add_action(
+	string $hook,
+	callable $callback,
+	int $priority = 10,
+	int $accepted_args = 1
+): void {
+	$GLOBALS['shurloc_test_actions'][] = array(
+		'hook'          => $hook,
+		'callback'      => $callback,
+		'priority'      => $priority,
+		'accepted_args' => $accepted_args,
+	);
+}
+
+/**
+ * Determines whether the current request is an admin request.
+ */
+function is_admin(): bool {
+	return $GLOBALS['shurloc_test_is_admin'] ?? false;
+}
+
+
+/**
+ * Determines whether a post has a taxonomy term.
+ *
+ * @param int|string|array<int|string> $term     Term slug, ID, name, or terms.
+ * @param string                       $taxonomy Taxonomy name.
+ * @param int                          $post     Post ID.
+ */
+function has_term(
+	int|string|array $term,
+	string $taxonomy,
+	int $post
+): bool {
+	$terms = $GLOBALS['shurloc_test_terms'][ $post ][ $taxonomy ] ?? array();
+
+	if ( is_array( $term ) ) {
+		return array_intersect( $term, $terms ) !== array();
+	}
+
+	return in_array( $term, $terms, true );
+}
