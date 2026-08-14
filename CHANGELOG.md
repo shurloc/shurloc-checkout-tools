@@ -1,3 +1,15 @@
+# Changelog
+
+## [0.2.0] - 2026-08-14
+
+### Added
+
+- Added payment processing fees for eligible WooCommerce payment gateways.
+- Added 1.5% processing fee for Card on File and PayPal card payments.
+- Added 1.75% processing fee for eligible PayPal payment methods.
+- Added automatic checkout recalculation when the selected payment method changes.
+- Added PHPUnit coverage for payment processing fee calculation and frontend asset loading.
+
 ## [0.1.0] - 2026-08-14
 
 ### Added

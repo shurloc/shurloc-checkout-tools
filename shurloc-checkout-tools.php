@@ -3,7 +3,7 @@
  * Plugin Name:       Shur-Loc Checkout Tools
  * Plugin URI:        https://shurloc.com/
  * Description:       Checkout tools for the Shur-Loc website.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 7.0
  * Requires PHP:      8.4
  * Requires Plugins:  woocommerce, shurloc-tools
