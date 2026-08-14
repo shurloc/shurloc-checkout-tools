@@ -4,8 +4,12 @@
 	function getFeeConfig(label) {
 		let match = null;
 
+		if (!label) {
+			return match;
+		}
+
 		$.each(shurlocTariffTooltips.fees, function (index, fee) {
-			if (fee.label === label) {
+			if (label.indexOf(fee.label) !== -1) {
 				match = fee;
 				return false;
 			}
@@ -119,21 +123,26 @@
 	}
 
 	function addMobileTooltips() {
-		$('.fee td').each(function () {
-			const $cell = $(this);
-			const dataTitle = $cell.attr('data-title');
+		$('.fee').each(function () {
+			const $row = $(this);
+			const $cell = $row.find('td').first();
 
-			if (!dataTitle) {
-				return;
-			}
-
-			const fee = getFeeConfig(dataTitle);
-
-			if (!fee) {
+			if (!$cell.length) {
 				return;
 			}
 
 			if ($cell.find('.shurloc-mobile-tariff-tooltip').length) {
+				return;
+			}
+
+			const dataTitle = $cell.attr('data-title');
+			let fee = getFeeConfig(dataTitle);
+
+			if (!fee) {
+				fee = getFeeConfig($.trim($row.text()));
+			}
+
+			if (!fee) {
 				return;
 			}
 
