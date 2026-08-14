@@ -61,6 +61,11 @@ final class Shurloc_Payment_Processing_Fee {
 			array( $this, 'add_processing_fee' ),
 			999
 		);
+
+		add_action(
+			'wp_enqueue_scripts',
+			array( $this, 'enqueue_assets' )
+		);
 	}
 
 	/**
@@ -124,6 +129,23 @@ final class Shurloc_Payment_Processing_Fee {
 			$fee_name,
 			$processing_fee,
 			false
+		);
+	}
+
+	/**
+	 * Enqueues payment processing fee assets.
+	 */
+	public function enqueue_assets(): void {
+		if ( ! is_checkout() ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'shurloc-payment-processing-fee',
+			SHURLOC_CHECKOUT_TOOLS_URL . 'assets/js/payment-processing-fee.js',
+			array( 'jquery' ),
+			SHURLOC_CHECKOUT_TOOLS_VERSION,
+			true
 		);
 	}
 

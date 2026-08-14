@@ -31,10 +31,11 @@ final class ShurlocPaymentProcessingFeeTest extends TestCase {
 
 		$this->woocommerce = new Shurloc_Test_WooCommerce();
 
-		$GLOBALS['shurloc_test_wc']          = $this->woocommerce;
-		$GLOBALS['shurloc_test_actions']     = array();
-		$GLOBALS['shurloc_test_is_admin']    = false;
-		$GLOBALS['shurloc_test_is_checkout'] = true;
+		$GLOBALS['shurloc_test_wc']               = $this->woocommerce;
+		$GLOBALS['shurloc_test_actions']          = array();
+		$GLOBALS['shurloc_test_is_admin']         = false;
+		$GLOBALS['shurloc_test_is_checkout']      = true;
+		$GLOBALS['shurloc_test_enqueued_scripts'] = array();
 	}
 
 	/**
@@ -45,7 +46,8 @@ final class ShurlocPaymentProcessingFeeTest extends TestCase {
 			$GLOBALS['shurloc_test_wc'],
 			$GLOBALS['shurloc_test_actions'],
 			$GLOBALS['shurloc_test_is_admin'],
-			$GLOBALS['shurloc_test_is_checkout']
+			$GLOBALS['shurloc_test_is_checkout'],
+			$GLOBALS['shurloc_test_enqueued_scripts']
 		);
 
 		parent::tearDown();
@@ -60,7 +62,7 @@ final class ShurlocPaymentProcessingFeeTest extends TestCase {
 		$processing_fee->register();
 
 		$this->assertCount(
-			1,
+			2,
 			$GLOBALS['shurloc_test_actions']
 		);
 
@@ -77,6 +79,56 @@ final class ShurlocPaymentProcessingFeeTest extends TestCase {
 		$this->assertSame(
 			999,
 			$GLOBALS['shurloc_test_actions'][0]['priority']
+		);
+
+		$this->assertSame(
+			'wp_enqueue_scripts',
+			$GLOBALS['shurloc_test_actions'][1]['hook']
+		);
+
+		$this->assertSame(
+			array( $processing_fee, 'enqueue_assets' ),
+			$GLOBALS['shurloc_test_actions'][1]['callback']
+		);
+
+		$this->assertSame(
+			10,
+			$GLOBALS['shurloc_test_actions'][1]['priority']
+		);
+	}
+
+	/**
+	 * Tests that processing fees JS is enqueued on checkout.
+	 */
+	public function test_processing_fee_script_is_enqueued_on_checkout(): void {
+		$processing_fee = new Shurloc_Payment_Processing_Fee();
+
+		$processing_fee->enqueue_assets();
+
+		$this->assertCount(
+			1,
+			$GLOBALS['shurloc_test_enqueued_scripts']
+		);
+
+		$this->assertSame(
+			'shurloc-payment-processing-fee',
+			$GLOBALS['shurloc_test_enqueued_scripts'][0]['handle']
+		);
+	}
+
+	/**
+	 * Tests that the processing fee script is not enqueued outside checkout.
+	 */
+	public function test_processing_fee_script_is_not_enqueued_outside_checkout(): void {
+		$GLOBALS['shurloc_test_is_checkout'] = false;
+
+		$processing_fee = new Shurloc_Payment_Processing_Fee();
+
+		$processing_fee->enqueue_assets();
+
+		$this->assertSame(
+			array(),
+			$GLOBALS['shurloc_test_enqueued_scripts']
 		);
 	}
 
