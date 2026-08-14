@@ -2,7 +2,7 @@
 /**
  * WordPress function test doubles.
  *
- * @package ShurLocCheckoutTools
+ * @package ShurlocCheckoutTools
  */
 
 declare( strict_types=1 );

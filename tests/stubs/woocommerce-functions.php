@@ -2,7 +2,7 @@
 /**
  * WooCommerce function test stubs.
  *
- * @package ShurLocCheckoutTools
+ * @package ShurlocCheckoutTools
  */
 
 declare( strict_types=1 );

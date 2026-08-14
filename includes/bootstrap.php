@@ -2,7 +2,7 @@
 /**
  * Plugin bootstrap.
  *
- * @package ShurlocCcheckoutTools
+ * @package ShurlocCheckoutTools
  */
 
 declare( strict_types=1 );

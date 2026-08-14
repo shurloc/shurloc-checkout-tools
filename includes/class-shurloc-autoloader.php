@@ -4,7 +4,7 @@
  *
  * Automatically loads classes, interfaces, and traits from the includes directory.
  *
- * @package ShurLocCheckoutTools
+ * @package ShurlocCheckoutTools
  */
 
 declare( strict_types=1 );
@@ -12,7 +12,7 @@ declare( strict_types=1 );
 namespace Shurloc\CheckoutTools;
 
 /**
- * ShurLoc autoloader.
+ * Shurloc autoloader.
  */
 final class Shurloc_Autoloader {
 

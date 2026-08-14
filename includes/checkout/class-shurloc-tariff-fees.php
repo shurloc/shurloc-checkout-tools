@@ -2,7 +2,7 @@
 /**
  * Tariff fee calculation.
  *
- * @package ShurLocCheckoutTools
+ * @package ShurlocCheckoutTools
  */
 
 declare( strict_types=1 );
