@@ -2,7 +2,7 @@
 /**
  * Plugin bootstrap.
  *
- * @package ShurlocCcheckoutTools
+ * @package ShurlocCheckoutTools
  */
 
 declare( strict_types=1 );
@@ -28,6 +28,16 @@ function shurloc_checkout_tools_bootstrap(): void {
 	);
 
 	$autoloader->register();
+
+	/**
+	 * Tariff fees.
+	 */
+
+	$tariff_fees = new Shurloc_Tariff_Fees();
+	$tariff_fees->register();
+
+	$tariff_tooltips = new Shurloc_Tariff_Tooltips();
+	$tariff_tooltips->register();
 }
 
 add_action(
