@@ -35,6 +35,15 @@ function shurloc_checkout_tools_bootstrap(): void {
 
 	$settings = new Shurloc_Settings();
 
+	$settings_page = new Shurloc_Settings_Page(
+		settings: $settings,
+	);
+	$settings_page->register();
+
+	$admin_page = new Shurloc_Admin_Page_Controller(
+		settings_page: $settings_page,
+	);
+
 	/**
 	 * Tariff fees.
 	 */
