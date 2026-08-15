@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.0] - 2026-08-15
+
+### Added
+
+- Added Checkout Tools admin interface under the shared ShurLoc Tools menu.
+- Added configurable tariff settings for the raw material import and Sefar mesh tariffs.
+- Added controls to enable or disable each tariff independently.
+- Added configurable tariff percentages and customer-facing tooltip messages.
+- Added automated test coverage for Checkout Tools settings, settings sanitization, admin menu integration, configurable tariff calculations, and tooltip configuration.
+
+### Changed
+
+- Updated tariff fee calculations to use configurable rates instead of hard-coded values.
+- Updated tariff tooltips to use configurable customer-facing messages.
+- Updated tariff percentage handling to store and display human-readable percentage values while providing decimal rates for fee calculations.
+
 ## [0.2.0] - 2026-08-14
 
 ### Added
