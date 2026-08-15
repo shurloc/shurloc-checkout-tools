@@ -44,7 +44,9 @@ function shurloc_checkout_tools_bootstrap(): void {
 	);
 	$tariff_fees->register();
 
-	$tariff_tooltips = new Shurloc_Tariff_Tooltips();
+	$tariff_tooltips = new Shurloc_Tariff_Tooltips(
+		settings: $settings,
+	);
 	$tariff_tooltips->register();
 
 	/**
