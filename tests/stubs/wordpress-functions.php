@@ -416,3 +416,97 @@ if ( ! function_exists( 'current_user_can' ) ) {
 		return $GLOBALS['shurloc_test_current_user_can'] ?? false;
 	}
 }
+
+if ( ! function_exists( 'add_submenu_page' ) ) {
+
+	/**
+	 * Registers an admin submenu page.
+	 *
+	 * @param string         $parent_slug Parent menu slug.
+	 * @param string         $page_title  Page title.
+	 * @param string         $menu_title  Menu title.
+	 * @param string         $capability  Required capability.
+	 * @param string         $menu_slug   Menu slug.
+	 * @param callable|null  $callback    Page callback.
+	 * @param int|float|null $position   Menu position.
+	 * @return string Hook suffix.
+	 */
+	function add_submenu_page(
+		string $parent_slug,
+		string $page_title,
+		string $menu_title,
+		string $capability,
+		string $menu_slug,
+		callable|null $callback = null,
+		int|float|null $position = null
+	): string {
+		$GLOBALS['shurloc_test_submenu_pages'][] = array(
+			'parent_slug' => $parent_slug,
+			'page_title'  => $page_title,
+			'menu_title'  => $menu_title,
+			'capability'  => $capability,
+			'menu_slug'   => $menu_slug,
+			'callback'    => $callback,
+			'position'    => $position,
+		);
+
+		return 'shurloc-checkout-tools';
+	}
+}
+
+if ( ! function_exists( 'esc_url' ) ) {
+
+	/**
+	 * Escapes a URL.
+	 *
+	 * @param string $url URL to escape.
+	 * @return string Escaped URL.
+	 */
+	function esc_url(
+		string $url
+	): string {
+		return $url;
+	}
+}
+
+if ( ! function_exists( 'add_query_arg' ) ) {
+
+	/**
+	 * Adds query arguments to a URL.
+	 *
+	 * @param array<string, scalar> $args Query arguments.
+	 * @param string                $url  URL.
+	 * @return string URL with query arguments.
+	 */
+	function add_query_arg(
+		array $args,
+		string $url
+	): string {
+		$query = http_build_query( $args );
+
+		if ( '' === $query ) {
+			return $url;
+		}
+
+		$separator = str_contains( $url, '?' )
+			? '&'
+			: '?';
+
+		return $url . $separator . $query;
+	}
+}
+
+if ( ! function_exists( 'admin_url' ) ) {
+
+	/**
+	 * Gets a URL within the WordPress admin area.
+	 *
+	 * @param string $path Path relative to the admin directory.
+	 * @return string Admin URL.
+	 */
+	function admin_url(
+		string $path = ''
+	): string {
+		return 'https://example.com/wp-admin/' . ltrim( $path, '/' );
+	}
+}
