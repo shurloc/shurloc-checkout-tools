@@ -140,9 +140,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -177,9 +177,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_tag',
-			'sefar'
+			product_id: 101,
+			taxonomy: 'product_tag',
+			term: 'sefar'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -214,15 +214,15 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			101,
-			'product_tag',
-			'sefar'
+			product_id: 101,
+			taxonomy: 'product_tag',
+			term: 'sefar'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -261,15 +261,15 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			102,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 102,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -312,27 +312,27 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			102,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 102,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			103,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 103,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			103,
-			'product_tag',
-			'sefar'
+			product_id: 103,
+			taxonomy: 'product_tag',
+			term: 'sefar'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -372,9 +372,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -400,10 +400,10 @@ final class ShurlocTariffFeesTest extends TestCase {
 	 */
 	public function test_custom_mesh_tariff_rate_is_used(): void {
 		$this->set_tariff_settings(
-			array(
+			tariffs: array(
 				'mesh' => array(
 					'enabled' => true,
-					'rate'    => 0.05,
+					'rate'    => 5.0,
 				),
 			)
 		);
@@ -418,9 +418,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -440,10 +440,10 @@ final class ShurlocTariffFeesTest extends TestCase {
 	 */
 	public function test_custom_sefar_tariff_rate_is_used(): void {
 		$this->set_tariff_settings(
-			array(
+			tariffs: array(
 				'sefar' => array(
 					'enabled' => true,
-					'rate'    => 0.12,
+					'rate'    => 12.0,
 				),
 			)
 		);
@@ -458,9 +458,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_tag',
-			'sefar'
+			product_id: 101,
+			taxonomy: 'product_tag',
+			term: 'sefar'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -480,7 +480,7 @@ final class ShurlocTariffFeesTest extends TestCase {
 	 */
 	public function test_disabled_mesh_tariff_is_not_added(): void {
 		$this->set_tariff_settings(
-			array(
+			tariffs: array(
 				'mesh' => array(
 					'enabled' => false,
 				),
@@ -497,9 +497,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -519,7 +519,7 @@ final class ShurlocTariffFeesTest extends TestCase {
 	 */
 	public function test_disabled_sefar_tariff_is_not_added(): void {
 		$this->set_tariff_settings(
-			array(
+			tariffs: array(
 				'sefar' => array(
 					'enabled' => false,
 				),
@@ -536,9 +536,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_tag',
-			'sefar'
+			product_id: 101,
+			taxonomy: 'product_tag',
+			term: 'sefar'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -569,9 +569,9 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$tariff_fees = $this->create_tariff_fees();
@@ -591,7 +591,7 @@ final class ShurlocTariffFeesTest extends TestCase {
 	 */
 	private function create_tariff_fees(): Shurloc_Tariff_Fees {
 		return new Shurloc_Tariff_Fees(
-			new Shurloc_Settings()
+			settings: new Shurloc_Settings()
 		);
 	}
 

@@ -53,12 +53,12 @@ final class ShurlocSettingsTest extends TestCase {
 				'tariffs' => array(
 					'mesh'  => array(
 						'enabled' => true,
-						'rate'    => 0.03,
+						'rate'    => 3.0,
 						'message' => 'Due to a 6% tariff from our suppliers, all mesh orders will include a 3% tariff fee as a separate line item on invoices. We\'re sharing this cost to minimize impact and will adjust if tariff conditions change. Thank you for your understanding.',
 					),
 					'sefar' => array(
 						'enabled' => true,
-						'rate'    => 0.09,
+						'rate'    => 9.0,
 						'message' => 'Due to a 12% mesh tariff from Sefar, mesh orders will include a 9% tariff fee as a separate line item on invoices. Shur-Loc pays 3% of this tariff based on paying half of 6% for both Murakami and Saati sharing this cost to minimize industry impact and Shur-Loc will adjust if tariff conditions change. Thank you for your understanding.',
 					),
 				),
@@ -114,12 +114,12 @@ final class ShurlocSettingsTest extends TestCase {
 			'tariffs' => array(
 				'mesh'  => array(
 					'enabled' => false,
-					'rate'    => 0.05,
+					'rate'    => 5.0,
 					'message' => 'Custom mesh tariff message.',
 				),
 				'sefar' => array(
 					'enabled' => true,
-					'rate'    => 0.12,
+					'rate'    => 12.0,
 					'message' => 'Custom Sefar tariff message.',
 				),
 			),
@@ -165,7 +165,7 @@ final class ShurlocSettingsTest extends TestCase {
 		$GLOBALS['shurloc_test_options'][ Shurloc_Settings::OPTION_NAME ] = array(
 			'tariffs' => array(
 				'mesh' => array(
-					'rate' => 0.04,
+					'rate' => 4.0,
 				),
 			),
 		);
@@ -234,7 +234,7 @@ final class ShurlocSettingsTest extends TestCase {
 	}
 
 	/**
-	 * Tests that numeric string rates are normalized to floats.
+	 * Tests that numeric string percentages are normalized to floats.
 	 *
 	 * @return void
 	 */
@@ -242,15 +242,25 @@ final class ShurlocSettingsTest extends TestCase {
 		$GLOBALS['shurloc_test_options'][ Shurloc_Settings::OPTION_NAME ] = array(
 			'tariffs' => array(
 				'mesh'  => array(
-					'rate' => '0.045',
+					'rate' => '4.5',
 				),
 				'sefar' => array(
-					'rate' => '0.11',
+					'rate' => '11',
 				),
 			),
 		);
 
 		$settings = new Shurloc_Settings();
+
+		$this->assertSame(
+			4.5,
+			$settings->get_settings()['tariffs']['mesh']['rate']
+		);
+
+		$this->assertSame(
+			11.0,
+			$settings->get_settings()['tariffs']['sefar']['rate']
+		);
 
 		$this->assertSame(
 			0.045,
@@ -281,6 +291,16 @@ final class ShurlocSettingsTest extends TestCase {
 		);
 
 		$settings = new Shurloc_Settings();
+
+		$this->assertSame(
+			3.0,
+			$settings->get_settings()['tariffs']['mesh']['rate']
+		);
+
+		$this->assertSame(
+			9.0,
+			$settings->get_settings()['tariffs']['sefar']['rate']
+		);
 
 		$this->assertSame(
 			0.03,

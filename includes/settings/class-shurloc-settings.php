@@ -22,18 +22,18 @@ final class Shurloc_Settings {
 	public const OPTION_NAME = 'shurloc_checkout_tools_settings';
 
 	/**
-	 * Default mesh tariff rate.
+	 * Default mesh tariff percentage.
 	 *
 	 * @var float
 	 */
-	private const DEFAULT_MESH_TARIFF_RATE = 0.03;
+	private const DEFAULT_MESH_TARIFF_RATE = 3.0;
 
 	/**
-	 * Default Sefar tariff rate.
+	 * Default Sefar tariff percentage.
 	 *
 	 * @var float
 	 */
-	private const DEFAULT_SEFAR_TARIFF_RATE = 0.09;
+	private const DEFAULT_SEFAR_TARIFF_RATE = 9.0;
 
 	/**
 	 * Default mesh tariff message.
@@ -63,12 +63,12 @@ final class Shurloc_Settings {
 	/**
 	 * Gets the mesh tariff rate.
 	 *
-	 * @return float Mesh tariff rate.
+	 * @return float Mesh tariff rate as a decimal.
 	 */
 	public function get_mesh_tariff_rate(): float {
 		$settings = $this->get_settings();
 
-		return $settings['tariffs']['mesh']['rate'];
+		return $settings['tariffs']['mesh']['rate'] / 100;
 	}
 
 	/**
@@ -96,12 +96,12 @@ final class Shurloc_Settings {
 	/**
 	 * Gets the Sefar tariff rate.
 	 *
-	 * @return float Sefar tariff rate.
+	 * @return float Sefar tariff rate as a decimal.
 	 */
 	public function get_sefar_tariff_rate(): float {
 		$settings = $this->get_settings();
 
-		return $settings['tariffs']['sefar']['rate'];
+		return $settings['tariffs']['sefar']['rate'] / 100;
 	}
 
 	/**
@@ -117,6 +117,8 @@ final class Shurloc_Settings {
 
 	/**
 	 * Gets normalized Checkout Tools settings.
+	 *
+	 * Tariff rates are stored as percentages.
 	 *
 	 * @return array{
 	 *     tariffs: array{
@@ -144,12 +146,14 @@ final class Shurloc_Settings {
 		}
 
 		return $this->normalize_settings(
-			$settings
+			settings: $settings
 		);
 	}
 
 	/**
 	 * Gets the default Checkout Tools settings.
+	 *
+	 * Tariff rates are stored as percentages.
 	 *
 	 * @return array{
 	 *     tariffs: array{
@@ -186,6 +190,8 @@ final class Shurloc_Settings {
 	/**
 	 * Normalizes stored settings against the defaults.
 	 *
+	 * Tariff rates are stored as percentages.
+	 *
 	 * @param array<string, mixed> $settings Stored settings.
 	 * @return array{
 	 *     tariffs: array{
@@ -208,13 +214,13 @@ final class Shurloc_Settings {
 		$defaults = $this->get_defaults();
 
 		$mesh_settings = $this->get_tariff_settings(
-			$settings,
-			'mesh'
+			settings: $settings,
+			tariff_type: 'mesh'
 		);
 
 		$sefar_settings = $this->get_tariff_settings(
-			$settings,
-			'sefar'
+			settings: $settings,
+			tariff_type: 'sefar'
 		);
 
 		return array(

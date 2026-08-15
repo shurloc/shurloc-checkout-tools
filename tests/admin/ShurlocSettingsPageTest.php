@@ -230,12 +230,12 @@ final class ShurlocSettingsPageTest extends TestCase {
 				'tariffs' => array(
 					'mesh'  => array(
 						'enabled' => true,
-						'rate'    => 0.045,
+						'rate'    => 4.5,
 						'message' => 'Custom mesh message.',
 					),
 					'sefar' => array(
 						'enabled' => true,
-						'rate'    => 0.1125,
+						'rate'    => 11.25,
 						'message' => 'Custom Sefar message.',
 					),
 				),
@@ -275,11 +275,11 @@ final class ShurlocSettingsPageTest extends TestCase {
 	}
 
 	/**
-	 * Tests that percentages are converted to decimal rates.
+	 * Tests that tariff rates remain stored as percentages.
 	 *
 	 * @return void
 	 */
-	public function test_tariff_rates_are_converted_from_percentages(): void {
+	public function test_tariff_rates_are_stored_as_percentages(): void {
 		$sanitized = $this->settings_page->sanitize_settings(
 			input: array(
 				'tariffs' => array(
@@ -296,12 +296,12 @@ final class ShurlocSettingsPageTest extends TestCase {
 		);
 
 		$this->assertSame(
-			0.03,
+			3.0,
 			$sanitized['tariffs']['mesh']['rate']
 		);
 
 		$this->assertSame(
-			0.09,
+			9.0,
 			$sanitized['tariffs']['sefar']['rate']
 		);
 	}
@@ -351,12 +351,12 @@ final class ShurlocSettingsPageTest extends TestCase {
 		);
 
 		$this->assertSame(
-			0.03,
+			3.0,
 			$sanitized['tariffs']['mesh']['rate']
 		);
 
 		$this->assertSame(
-			0.09,
+			9.0,
 			$sanitized['tariffs']['sefar']['rate']
 		);
 	}
@@ -381,12 +381,12 @@ final class ShurlocSettingsPageTest extends TestCase {
 		);
 
 		$this->assertSame(
-			0.03,
+			3.0,
 			$sanitized['tariffs']['mesh']['rate']
 		);
 
 		$this->assertSame(
-			0.09,
+			9.0,
 			$sanitized['tariffs']['sefar']['rate']
 		);
 	}
@@ -406,7 +406,7 @@ final class ShurlocSettingsPageTest extends TestCase {
 	}
 
 	/**
-	 * Tests that missing tariff groups fall back to default rates and messages.
+	 * Tests that missing tariff groups use default rates and messages.
 	 *
 	 * @return void
 	 */
@@ -420,7 +420,7 @@ final class ShurlocSettingsPageTest extends TestCase {
 		);
 
 		$this->assertSame(
-			0.03,
+			3.0,
 			$sanitized['tariffs']['mesh']['rate']
 		);
 
@@ -434,7 +434,7 @@ final class ShurlocSettingsPageTest extends TestCase {
 		);
 
 		$this->assertSame(
-			0.09,
+			9.0,
 			$sanitized['tariffs']['sefar']['rate']
 		);
 

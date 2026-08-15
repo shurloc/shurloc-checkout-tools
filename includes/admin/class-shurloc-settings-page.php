@@ -366,12 +366,11 @@ final class Shurloc_Settings_Page {
 	/**
 	 * Sanitizes a submitted tariff rate.
 	 *
-	 * Submitted values are percentages between 0 and 100. The returned value
-	 * is stored as a decimal rate between 0 and 1.
+	 * Submitted values are percentages between 0 and 100.
 	 *
 	 * @param mixed $value        Submitted percentage.
-	 * @param float $default_rate Default decimal rate.
-	 * @return float Sanitized decimal tariff rate.
+	 * @param float $default_rate Default percentage.
+	 * @return float Sanitized tariff percentage.
 	 */
 	private function sanitize_rate(
 		mixed $value,
@@ -387,7 +386,7 @@ final class Shurloc_Settings_Page {
 			return $default_rate;
 		}
 
-		return $percentage / 100;
+		return $percentage;
 	}
 
 	/**
