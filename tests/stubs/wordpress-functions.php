@@ -213,3 +213,21 @@ if ( ! function_exists( 'wp_localize_script' ) ) {
 		return true;
 	}
 }
+
+if ( ! function_exists( 'get_option' ) ) {
+
+	/**
+	 * Gets a WordPress option.
+	 *
+	 * @param string $option        Option name.
+	 * @param mixed  $default_value Default value.
+	 * @return mixed Option         value.
+	 */
+	function get_option(
+		string $option,
+		mixed $default_value = false
+	): mixed {
+
+		return $GLOBALS['shurloc_test_options'][ $option ] ?? $default_value;
+	}
+}
