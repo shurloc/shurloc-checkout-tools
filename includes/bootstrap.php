@@ -30,10 +30,18 @@ function shurloc_checkout_tools_bootstrap(): void {
 	$autoloader->register();
 
 	/**
+	 * Settings.
+	 */
+
+	$settings = new Shurloc_Settings();
+
+	/**
 	 * Tariff fees.
 	 */
 
-	$tariff_fees = new Shurloc_Tariff_Fees();
+	$tariff_fees = new Shurloc_Tariff_Fees(
+		settings: $settings,
+	);
 	$tariff_fees->register();
 
 	$tariff_tooltips = new Shurloc_Tariff_Tooltips();
