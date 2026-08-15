@@ -25,6 +25,8 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Sets up each test.
+	 *
+	 * @return void
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -35,17 +37,21 @@ final class ShurlocTariffFeesTest extends TestCase {
 		$GLOBALS['shurloc_test_is_admin'] = false;
 		$GLOBALS['shurloc_test_terms']    = array();
 		$GLOBALS['shurloc_test_actions']  = array();
+		$GLOBALS['shurloc_test_options']  = array();
 	}
 
 	/**
 	 * Cleans up after each test.
+	 *
+	 * @return void
 	 */
 	protected function tearDown(): void {
 		unset(
 			$GLOBALS['shurloc_test_wc'],
 			$GLOBALS['shurloc_test_is_admin'],
 			$GLOBALS['shurloc_test_terms'],
-			$GLOBALS['shurloc_test_actions']
+			$GLOBALS['shurloc_test_actions'],
+			$GLOBALS['shurloc_test_options']
 		);
 
 		parent::tearDown();
@@ -53,9 +59,11 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Tests that the WooCommerce hook is registered.
+	 *
+	 * @return void
 	 */
 	public function test_register_adds_cart_calculate_fees_action(): void {
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->register();
 
@@ -77,9 +85,11 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Tests that an empty cart does not receive tariff fees.
+	 *
+	 * @return void
 	 */
 	public function test_empty_cart_adds_no_fees(): void {
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->add_tariff_fees();
 
@@ -91,6 +101,8 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Tests that a non-mesh product does not receive a tariff fee.
+	 *
+	 * @return void
 	 */
 	public function test_non_mesh_product_adds_no_fee(): void {
 		$this->woocommerce->cart->set_cart(
@@ -102,7 +114,7 @@ final class ShurlocTariffFeesTest extends TestCase {
 			)
 		);
 
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->add_tariff_fees();
 
@@ -114,6 +126,8 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Tests the regular mesh tariff.
+	 *
+	 * @return void
 	 */
 	public function test_mesh_product_adds_three_percent_tariff(): void {
 		$this->woocommerce->cart->set_cart(
@@ -126,12 +140,12 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->add_tariff_fees();
 
@@ -149,6 +163,8 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Tests the Sefar mesh tariff.
+	 *
+	 * @return void
 	 */
 	public function test_sefar_product_adds_nine_percent_tariff(): void {
 		$this->woocommerce->cart->set_cart(
@@ -161,12 +177,12 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_tag',
-			'sefar'
+			product_id: 101,
+			taxonomy: 'product_tag',
+			term: 'sefar'
 		);
 
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->add_tariff_fees();
 
@@ -184,6 +200,8 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Tests that the Sefar tariff takes precedence over the mesh tariff.
+	 *
+	 * @return void
 	 */
 	public function test_sefar_product_in_mesh_category_receives_only_sefar_tariff(): void {
 		$this->woocommerce->cart->set_cart(
@@ -196,18 +214,18 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			101,
-			'product_tag',
-			'sefar'
+			product_id: 101,
+			taxonomy: 'product_tag',
+			term: 'sefar'
 		);
 
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->add_tariff_fees();
 
@@ -225,6 +243,8 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Tests that multiple mesh products are combined before calculating the tariff.
+	 *
+	 * @return void
 	 */
 	public function test_multiple_mesh_products_are_combined(): void {
 		$this->woocommerce->cart->set_cart(
@@ -241,18 +261,18 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			102,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 102,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->add_tariff_fees();
 
@@ -270,6 +290,8 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Tests a cart containing both regular mesh and Sefar products.
+	 *
+	 * @return void
 	 */
 	public function test_mixed_mesh_and_sefar_cart_adds_both_tariffs(): void {
 		$this->woocommerce->cart->set_cart(
@@ -290,30 +312,30 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			102,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 102,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			103,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 103,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
 		$this->add_product_term(
-			103,
-			'product_tag',
-			'sefar'
+			product_id: 103,
+			taxonomy: 'product_tag',
+			term: 'sefar'
 		);
 
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->add_tariff_fees();
 
@@ -336,6 +358,8 @@ final class ShurlocTariffFeesTest extends TestCase {
 
 	/**
 	 * Tests that the cart line total is used for tariff calculation.
+	 *
+	 * @return void
 	 */
 	public function test_tariff_uses_discounted_line_total(): void {
 		$this->woocommerce->cart->set_cart(
@@ -348,12 +372,12 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->add_tariff_fees();
 
@@ -370,7 +394,167 @@ final class ShurlocTariffFeesTest extends TestCase {
 	}
 
 	/**
+	 * Tests that a custom mesh tariff rate is used.
+	 *
+	 * @return void
+	 */
+	public function test_custom_mesh_tariff_rate_is_used(): void {
+		$this->set_tariff_settings(
+			tariffs: array(
+				'mesh' => array(
+					'enabled' => true,
+					'rate'    => 5.0,
+				),
+			)
+		);
+
+		$this->woocommerce->cart->set_cart(
+			array(
+				'item-1' => array(
+					'product_id' => 101,
+					'line_total' => 100.00,
+				),
+			)
+		);
+
+		$this->add_product_term(
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
+		);
+
+		$tariff_fees = $this->create_tariff_fees();
+
+		$tariff_fees->add_tariff_fees();
+
+		$this->assertSame(
+			5.00,
+			$this->woocommerce->cart->get_added_fees()[0]['amount']
+		);
+	}
+
+	/**
+	 * Tests that a custom Sefar tariff rate is used.
+	 *
+	 * @return void
+	 */
+	public function test_custom_sefar_tariff_rate_is_used(): void {
+		$this->set_tariff_settings(
+			tariffs: array(
+				'sefar' => array(
+					'enabled' => true,
+					'rate'    => 12.0,
+				),
+			)
+		);
+
+		$this->woocommerce->cart->set_cart(
+			array(
+				'item-1' => array(
+					'product_id' => 101,
+					'line_total' => 100.00,
+				),
+			)
+		);
+
+		$this->add_product_term(
+			product_id: 101,
+			taxonomy: 'product_tag',
+			term: 'sefar'
+		);
+
+		$tariff_fees = $this->create_tariff_fees();
+
+		$tariff_fees->add_tariff_fees();
+
+		$this->assertSame(
+			12.00,
+			$this->woocommerce->cart->get_added_fees()[0]['amount']
+		);
+	}
+
+	/**
+	 * Tests that the mesh tariff can be disabled.
+	 *
+	 * @return void
+	 */
+	public function test_disabled_mesh_tariff_is_not_added(): void {
+		$this->set_tariff_settings(
+			tariffs: array(
+				'mesh' => array(
+					'enabled' => false,
+				),
+			)
+		);
+
+		$this->woocommerce->cart->set_cart(
+			array(
+				'item-1' => array(
+					'product_id' => 101,
+					'line_total' => 100.00,
+				),
+			)
+		);
+
+		$this->add_product_term(
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
+		);
+
+		$tariff_fees = $this->create_tariff_fees();
+
+		$tariff_fees->add_tariff_fees();
+
+		$this->assertSame(
+			array(),
+			$this->woocommerce->cart->get_added_fees()
+		);
+	}
+
+	/**
+	 * Tests that the Sefar tariff can be disabled.
+	 *
+	 * @return void
+	 */
+	public function test_disabled_sefar_tariff_is_not_added(): void {
+		$this->set_tariff_settings(
+			tariffs: array(
+				'sefar' => array(
+					'enabled' => false,
+				),
+			)
+		);
+
+		$this->woocommerce->cart->set_cart(
+			array(
+				'item-1' => array(
+					'product_id' => 101,
+					'line_total' => 100.00,
+				),
+			)
+		);
+
+		$this->add_product_term(
+			product_id: 101,
+			taxonomy: 'product_tag',
+			term: 'sefar'
+		);
+
+		$tariff_fees = $this->create_tariff_fees();
+
+		$tariff_fees->add_tariff_fees();
+
+		$this->assertSame(
+			array(),
+			$this->woocommerce->cart->get_added_fees()
+		);
+	}
+
+	/**
 	 * Tests that tariff calculation does not run on normal admin requests.
+	 *
+	 * @return void
 	 */
 	public function test_admin_request_adds_no_fees(): void {
 		$GLOBALS['shurloc_test_is_admin'] = true;
@@ -385,12 +569,12 @@ final class ShurlocTariffFeesTest extends TestCase {
 		);
 
 		$this->add_product_term(
-			101,
-			'product_cat',
-			'shurloc-mesh'
+			product_id: 101,
+			taxonomy: 'product_cat',
+			term: 'shurloc-mesh'
 		);
 
-		$tariff_fees = new Shurloc_Tariff_Fees();
+		$tariff_fees = $this->create_tariff_fees();
 
 		$tariff_fees->add_tariff_fees();
 
@@ -401,11 +585,37 @@ final class ShurlocTariffFeesTest extends TestCase {
 	}
 
 	/**
+	 * Creates the tariff fee handler.
+	 *
+	 * @return Shurloc_Tariff_Fees Tariff fee handler.
+	 */
+	private function create_tariff_fees(): Shurloc_Tariff_Fees {
+		return new Shurloc_Tariff_Fees(
+			settings: new Shurloc_Settings()
+		);
+	}
+
+	/**
+	 * Stores tariff settings for a test.
+	 *
+	 * @param array<string, mixed> $tariffs Tariff settings.
+	 * @return void
+	 */
+	private function set_tariff_settings(
+		array $tariffs
+	): void {
+		$GLOBALS['shurloc_test_options'][ Shurloc_Settings::OPTION_NAME ] = array(
+			'tariffs' => $tariffs,
+		);
+	}
+
+	/**
 	 * Adds a taxonomy term to the test term registry.
 	 *
 	 * @param int    $product_id Product ID.
 	 * @param string $taxonomy   Taxonomy name.
 	 * @param string $term       Term slug.
+	 * @return void
 	 */
 	private function add_product_term(
 		int $product_id,

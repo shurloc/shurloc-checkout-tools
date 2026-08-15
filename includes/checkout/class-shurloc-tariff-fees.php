@@ -16,36 +16,54 @@ final class Shurloc_Tariff_Fees {
 
 	/**
 	 * Mesh product category slug.
+	 *
+	 * @var string
 	 */
 	private const MESH_CATEGORY_SLUG = 'shurloc-mesh';
 
 	/**
 	 * Sefar product tag slug.
+	 *
+	 * @var string
 	 */
 	private const SEFAR_TAG_SLUG = 'sefar';
 
 	/**
-	 * Regular mesh tariff rate.
-	 */
-	private const MESH_TARIFF_RATE = 0.03;
-
-	/**
-	 * Sefar tariff rate.
-	 */
-	private const SEFAR_TARIFF_RATE = 0.09;
-
-	/**
 	 * Regular mesh tariff fee label.
+	 *
+	 * @var string
 	 */
 	private const MESH_TARIFF_LABEL = 'Raw material import tariff';
 
 	/**
 	 * Sefar tariff fee label.
+	 *
+	 * @var string
 	 */
 	private const SEFAR_TARIFF_LABEL = 'Sefar Mesh Tariff';
 
 	/**
+	 * Checkout Tools settings.
+	 *
+	 * @var Shurloc_Settings
+	 */
+	private Shurloc_Settings $settings;
+
+	/**
+	 * Creates the tariff fee handler.
+	 *
+	 * @param Shurloc_Settings $settings Checkout Tools settings.
+	 */
+	public function __construct(
+		Shurloc_Settings $settings
+	) {
+		$this->settings = $settings;
+	}
+
+	/**
 	 * Registers WooCommerce hooks.
+	 *
+	 * @return void
 	 */
 	public function register(): void {
 		add_action(
@@ -56,6 +74,8 @@ final class Shurloc_Tariff_Fees {
 
 	/**
 	 * Adds applicable tariff fees to the cart.
+	 *
+	 * @return void
 	 */
 	public function add_tariff_fees(): void {
 		if (
@@ -108,17 +128,23 @@ final class Shurloc_Tariff_Fees {
 			}
 		}
 
-		if ( 0 < $mesh_total ) {
+		if (
+			$this->settings->is_mesh_tariff_enabled() &&
+			0 < $mesh_total
+		) {
 			WC()->cart->add_fee(
 				self::MESH_TARIFF_LABEL,
-				$mesh_total * self::MESH_TARIFF_RATE
+				$mesh_total * $this->settings->get_mesh_tariff_rate()
 			);
 		}
 
-		if ( 0 < $sefar_total ) {
+		if (
+			$this->settings->is_sefar_tariff_enabled() &&
+			0 < $sefar_total
+		) {
 			WC()->cart->add_fee(
 				self::SEFAR_TARIFF_LABEL,
-				$sefar_total * self::SEFAR_TARIFF_RATE
+				$sefar_total * $this->settings->get_sefar_tariff_rate()
 			);
 		}
 	}

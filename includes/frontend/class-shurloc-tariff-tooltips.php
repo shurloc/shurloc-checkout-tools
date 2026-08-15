@@ -2,7 +2,7 @@
 /**
  * Tariff tooltip frontend assets.
  *
- * @package ShurLocCheckoutTools
+ * @package ShurlocCheckoutTools
  */
 
 declare( strict_types=1 );
@@ -16,36 +16,54 @@ final class Shurloc_Tariff_Tooltips {
 
 	/**
 	 * Script handle.
+	 *
+	 * @var string
 	 */
 	private const SCRIPT_HANDLE = 'shurloc-tariff-tooltips';
 
 	/**
 	 * Style handle.
+	 *
+	 * @var string
 	 */
 	private const STYLE_HANDLE = 'shurloc-tariff-tooltips';
 
 	/**
 	 * Regular mesh tariff fee label.
+	 *
+	 * @var string
 	 */
 	private const MESH_TARIFF_LABEL = 'Raw material import tariff';
 
 	/**
 	 * Sefar tariff fee label.
+	 *
+	 * @var string
 	 */
 	private const SEFAR_TARIFF_LABEL = 'Sefar Mesh Tariff';
 
 	/**
-	 * Regular mesh tariff tooltip text.
+	 * Checkout Tools settings.
+	 *
+	 * @var Shurloc_Settings
 	 */
-	private const MESH_TARIFF_MESSAGE = 'Due to a 6% tariff from our suppliers, all mesh orders will include a 3% tariff fee as a separate line item on invoices. We\'re sharing this cost to minimize impact and will adjust if tariff conditions change. Thank you for your understanding.';
+	private Shurloc_Settings $settings;
 
 	/**
-	 * Sefar tariff tooltip text.
+	 * Creates the tariff tooltip handler.
+	 *
+	 * @param Shurloc_Settings $settings Checkout Tools settings.
 	 */
-	private const SEFAR_TARIFF_MESSAGE = 'Due to a 12% mesh tariff from Sefar, mesh orders will include a 9% tariff fee as a separate line item on invoices. Shur-Loc pays 3% of this tariff based on paying half of 6% for both Murakami and Saati sharing this cost to minimize industry impact and Shur-Loc will adjust if tariff conditions change. Thank you for your understanding.';
+	public function __construct(
+		Shurloc_Settings $settings
+	) {
+		$this->settings = $settings;
+	}
 
 	/**
 	 * Registers frontend hooks.
+	 *
+	 * @return void
 	 */
 	public function register(): void {
 		add_action(
@@ -56,6 +74,8 @@ final class Shurloc_Tariff_Tooltips {
 
 	/**
 	 * Enqueues tariff tooltip assets.
+	 *
+	 * @return void
 	 */
 	public function enqueue_assets(): void {
 		if (
@@ -84,17 +104,33 @@ final class Shurloc_Tariff_Tooltips {
 			self::SCRIPT_HANDLE,
 			'shurlocTariffTooltips',
 			array(
-				'fees' => array(
-					array(
-						'label'   => self::MESH_TARIFF_LABEL,
-						'message' => self::MESH_TARIFF_MESSAGE,
-					),
-					array(
-						'label'   => self::SEFAR_TARIFF_LABEL,
-						'message' => self::SEFAR_TARIFF_MESSAGE,
-					),
-				),
+				'fees' => $this->get_tooltip_fees(),
 			)
 		);
+	}
+
+	/**
+	 * Gets configured tariff tooltip data.
+	 *
+	 * @return array<int, array{label: string, message: string}> Tooltip fee data.
+	 */
+	private function get_tooltip_fees(): array {
+		$fees = array();
+
+		if ( $this->settings->is_mesh_tariff_enabled() ) {
+			$fees[] = array(
+				'label'   => self::MESH_TARIFF_LABEL,
+				'message' => $this->settings->get_mesh_tariff_message(),
+			);
+		}
+
+		if ( $this->settings->is_sefar_tariff_enabled() ) {
+			$fees[] = array(
+				'label'   => self::SEFAR_TARIFF_LABEL,
+				'message' => $this->settings->get_sefar_tariff_message(),
+			);
+		}
+
+		return $fees;
 	}
 }

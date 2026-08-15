@@ -30,13 +30,37 @@ function shurloc_checkout_tools_bootstrap(): void {
 	$autoloader->register();
 
 	/**
+	 * Settings.
+	 */
+
+	$settings = new Shurloc_Settings();
+
+	$settings_page = new Shurloc_Settings_Page(
+		settings: $settings,
+	);
+	$settings_page->register();
+
+	$admin_page = new Shurloc_Admin_Page_Controller(
+		settings_page: $settings_page,
+	);
+
+	$admin_menu = new Shurloc_Admin_Menu(
+		checkout_page: $admin_page,
+	);
+	$admin_menu->register();
+
+	/**
 	 * Tariff fees.
 	 */
 
-	$tariff_fees = new Shurloc_Tariff_Fees();
+	$tariff_fees = new Shurloc_Tariff_Fees(
+		settings: $settings,
+	);
 	$tariff_fees->register();
 
-	$tariff_tooltips = new Shurloc_Tariff_Tooltips();
+	$tariff_tooltips = new Shurloc_Tariff_Tooltips(
+		settings: $settings,
+	);
 	$tariff_tooltips->register();
 
 	/**
