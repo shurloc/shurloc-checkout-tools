@@ -231,3 +231,188 @@ if ( ! function_exists( 'get_option' ) ) {
 		return $GLOBALS['shurloc_test_options'][ $option ] ?? $default_value;
 	}
 }
+
+if ( ! function_exists( 'register_setting' ) ) {
+
+	/**
+	 * Registers a WordPress setting.
+	 *
+	 * @param string               $option_group Settings group.
+	 * @param string               $option_name  Option name.
+	 * @param array<string, mixed> $args         Registration arguments.
+	 * @return void
+	 */
+	function register_setting(
+		string $option_group,
+		string $option_name,
+		array $args = array()
+	): void {
+		$GLOBALS['shurloc_test_registered_settings'][] = array(
+			'option_group' => $option_group,
+			'option_name'  => $option_name,
+			'args'         => $args,
+		);
+	}
+}
+
+if ( ! function_exists( 'add_settings_section' ) ) {
+
+	/**
+	 * Registers a settings section.
+	 *
+	 * @param string   $id       Section ID.
+	 * @param string   $title    Section title.
+	 * @param callable $callback Section callback.
+	 * @param string   $page     Settings page.
+	 * @return void
+	 */
+	function add_settings_section(
+		string $id,
+		string $title,
+		callable $callback,
+		string $page
+	): void {
+		$GLOBALS['shurloc_test_settings_sections'][] = array(
+			'id'       => $id,
+			'title'    => $title,
+			'callback' => $callback,
+			'page'     => $page,
+		);
+	}
+}
+
+if ( ! function_exists( 'add_settings_field' ) ) {
+
+	/**
+	 * Registers a settings field.
+	 *
+	 * @param string   $id       Field ID.
+	 * @param string   $title    Field title.
+	 * @param callable $callback Field callback.
+	 * @param string   $page     Settings page.
+	 * @param string   $section  Settings section.
+	 * @return void
+	 */
+	function add_settings_field(
+		string $id,
+		string $title,
+		callable $callback,
+		string $page,
+		string $section = 'default'
+	): void {
+		$GLOBALS['shurloc_test_settings_fields'][] = array(
+			'id'       => $id,
+			'title'    => $title,
+			'callback' => $callback,
+			'page'     => $page,
+			'section'  => $section,
+		);
+	}
+}
+
+if ( ! function_exists( 'checked' ) ) {
+
+	/**
+	 * Outputs or returns the checked HTML attribute.
+	 *
+	 * @param mixed $checked Current value.
+	 * @param mixed $current Value to compare against.
+	 * @param bool  $display Whether to echo the attribute.
+	 * @return string Checked attribute.
+	 */
+	function checked(
+		mixed $checked,
+		mixed $current = true,
+		bool $display = true
+	): string {
+		$result = $checked === $current
+			? ' checked="checked"'
+			: '';
+
+		if ( $display ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Test double matches WordPress checked() output behavior.
+			echo $result;
+		}
+
+		return $result;
+	}
+}
+
+if ( ! function_exists( 'esc_attr' ) ) {
+
+	/**
+	 * Escapes a value for use in an HTML attribute.
+	 *
+	 * @param string $text Text to escape.
+	 * @return string Escaped text.
+	 */
+	function esc_attr(
+		string $text
+	): string {
+		return htmlspecialchars(
+			$text,
+			ENT_QUOTES | ENT_SUBSTITUTE,
+			'UTF-8'
+		);
+	}
+}
+
+if ( ! function_exists( 'esc_textarea' ) ) {
+
+	/**
+	 * Escapes text for use in a textarea.
+	 *
+	 * @param string $text Text to escape.
+	 * @return string Escaped text.
+	 */
+	function esc_textarea(
+		string $text
+	): string {
+		return htmlspecialchars(
+			$text,
+			ENT_QUOTES | ENT_SUBSTITUTE,
+			'UTF-8'
+		);
+	}
+}
+
+if ( ! function_exists( 'sanitize_textarea_field' ) ) {
+
+	/**
+	 * Sanitizes a multiline text field.
+	 *
+	 * @param string $text Text to sanitize.
+	 * @return string Sanitized text.
+	 */
+	function sanitize_textarea_field(
+		string $text
+	): string {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags -- Reduce dependency on WP functions
+		$text = strip_tags( $text );
+
+		$text = str_replace(
+			array( "\r\n", "\r" ),
+			"\n",
+			$text
+		);
+
+		return trim( $text );
+	}
+}
+
+if ( ! function_exists( 'current_user_can' ) ) {
+
+	/**
+	 * Determines whether the current user has a capability.
+	 *
+	 * @param string $capability Capability name.
+	 * @return bool Whether the current user has the capability.
+	 */
+	function current_user_can(
+		string $capability
+	): bool {
+		unset( $capability );
+
+		return $GLOBALS['shurloc_test_current_user_can'] ?? false;
+	}
+}
