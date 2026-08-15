@@ -140,7 +140,7 @@ final class Shurloc_Settings_Page {
 	/**
 	 * Sanitizes submitted Checkout Tools settings.
 	 *
-	 * Rates are submitted as percentages and stored internally as decimal rates.
+	 * Rates are submitted and stored as percentages.
 	 *
 	 * @param mixed $input Submitted settings.
 	 * @return array<string, mixed> Sanitized settings.
@@ -169,7 +169,7 @@ final class Shurloc_Settings_Page {
 		return array(
 			'tariffs' => array(
 				'mesh'  => array(
-					'enabled' => isset( $mesh['enabled'] ),
+					'enabled' => ! empty( $mesh['enabled'] ),
 					'rate'    => $this->sanitize_rate(
 						value: $mesh['rate'] ?? null,
 						default_rate: $defaults['tariffs']['mesh']['rate']
@@ -180,7 +180,7 @@ final class Shurloc_Settings_Page {
 					),
 				),
 				'sefar' => array(
-					'enabled' => isset( $sefar['enabled'] ),
+					'enabled' => ! empty( $sefar['enabled'] ),
 					'rate'    => $this->sanitize_rate(
 						value: $sefar['rate'] ?? null,
 						default_rate: $defaults['tariffs']['sefar']['rate']
@@ -240,6 +240,11 @@ final class Shurloc_Settings_Page {
 		?>
 		<label>
 			<input
+				type="hidden"
+				name="<?php echo esc_attr( Shurloc_Settings::OPTION_NAME ); ?>[tariffs][mesh][enabled]"
+				value="0"
+			>
+			<input
 				type="checkbox"
 				name="<?php echo esc_attr( Shurloc_Settings::OPTION_NAME ); ?>[tariffs][mesh][enabled]"
 				value="1"
@@ -256,9 +261,11 @@ final class Shurloc_Settings_Page {
 	 * @return void
 	 */
 	public function render_mesh_rate_field(): void {
+		$settings = $this->settings->get_settings();
+
 		$this->render_rate_field(
 			tariff_type: 'mesh',
-			rate: $this->settings->get_mesh_tariff_rate()
+			rate: $settings['tariffs']['mesh']['rate']
 		);
 	}
 
@@ -283,6 +290,11 @@ final class Shurloc_Settings_Page {
 		?>
 		<label>
 			<input
+				type="hidden"
+				name="<?php echo esc_attr( Shurloc_Settings::OPTION_NAME ); ?>[tariffs][sefar][enabled]"
+				value="0"
+			>
+			<input
 				type="checkbox"
 				name="<?php echo esc_attr( Shurloc_Settings::OPTION_NAME ); ?>[tariffs][sefar][enabled]"
 				value="1"
@@ -299,9 +311,11 @@ final class Shurloc_Settings_Page {
 	 * @return void
 	 */
 	public function render_sefar_rate_field(): void {
+		$settings = $this->settings->get_settings();
+
 		$this->render_rate_field(
 			tariff_type: 'sefar',
-			rate: $this->settings->get_sefar_tariff_rate()
+			rate: $settings['tariffs']['sefar']['rate']
 		);
 	}
 
@@ -321,19 +335,18 @@ final class Shurloc_Settings_Page {
 	 * Renders a tariff rate field.
 	 *
 	 * @param string $tariff_type Tariff type.
-	 * @param float  $rate        Stored decimal tariff rate.
+	 * @param float  $rate        Tariff percentage.
 	 * @return void
 	 */
 	private function render_rate_field(
 		string $tariff_type,
 		float $rate
 	): void {
-		$percentage = $rate * 100;
 		?>
 		<input
 			type="number"
 			name="<?php echo esc_attr( Shurloc_Settings::OPTION_NAME ); ?>[tariffs][<?php echo esc_attr( $tariff_type ); ?>][rate]"
-			value="<?php echo esc_attr( number_format( $percentage, 2, '.', '' ) ); ?>"
+			value="<?php echo esc_attr( number_format( $rate, 2, '.', '' ) ); ?>"
 			min="0"
 			max="100"
 			step="0.01"

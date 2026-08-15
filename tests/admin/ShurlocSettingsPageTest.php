@@ -245,7 +245,7 @@ final class ShurlocSettingsPageTest extends TestCase {
 	}
 
 	/**
-	 * Tests that unchecked tariff checkboxes are stored as disabled.
+	 * Tests that missing enabled fields are sanitized as disabled.
 	 *
 	 * @return void
 	 */
@@ -258,6 +258,38 @@ final class ShurlocSettingsPageTest extends TestCase {
 						'message' => 'Mesh message.',
 					),
 					'sefar' => array(
+						'rate'    => '9',
+						'message' => 'Sefar message.',
+					),
+				),
+			)
+		);
+
+		$this->assertFalse(
+			$sanitized['tariffs']['mesh']['enabled']
+		);
+
+		$this->assertFalse(
+			$sanitized['tariffs']['sefar']['enabled']
+		);
+	}
+
+	/**
+	 * Tests that explicit zero enabled values are sanitized as disabled.
+	 *
+	 * @return void
+	 */
+	public function test_zero_enabled_values_are_sanitized_as_false(): void {
+		$sanitized = $this->settings_page->sanitize_settings(
+			input: array(
+				'tariffs' => array(
+					'mesh'  => array(
+						'enabled' => '0',
+						'rate'    => '3',
+						'message' => 'Mesh message.',
+					),
+					'sefar' => array(
+						'enabled' => '0',
 						'rate'    => '9',
 						'message' => 'Sefar message.',
 					),
@@ -460,6 +492,16 @@ final class ShurlocSettingsPageTest extends TestCase {
 
 		$this->assertStringContainsString(
 			'[tariffs][mesh][enabled]',
+			$output
+		);
+
+		$this->assertStringContainsString(
+			'value="0"',
+			$output
+		);
+
+		$this->assertStringContainsString(
+			'value="1"',
 			$output
 		);
 
