@@ -69,6 +69,12 @@ function shurloc_checkout_tools_bootstrap(): void {
 
 	$payment_processing_fee = new Shurloc_Payment_Processing_Fee();
 	$payment_processing_fee->register();
+
+	/**
+	 * Payment labels.
+	 */
+	$payment_labels = new Shurloc_Payment_Gateway_Labels();
+	$payment_labels->register();
 }
 
 add_action(
