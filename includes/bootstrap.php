@@ -35,19 +35,21 @@ function shurloc_checkout_tools_bootstrap(): void {
 
 	$settings = new Shurloc_Settings();
 
-	$settings_page = new Shurloc_Settings_Page(
-		settings: $settings,
-	);
-	$settings_page->register();
+	if ( interface_exists( 'Shurloc_Admin_Page_Interface' ) ) {
+		$settings_page = new Shurloc_Settings_Page(
+			settings: $settings,
+		);
+		$settings_page->register();
 
-	$admin_page = new Shurloc_Admin_Page_Controller(
-		settings_page: $settings_page,
-	);
+		$admin_page = new Shurloc_Admin_Page_Controller(
+			settings_page: $settings_page,
+		);
 
-	$admin_menu = new Shurloc_Admin_Menu(
-		checkout_page: $admin_page,
-	);
-	$admin_menu->register();
+		$admin_menu = new Shurloc_Admin_Menu(
+			checkout_page: $admin_page,
+		);
+		$admin_menu->register();
+	}
 
 	/**
 	 * Tariff fees.
@@ -73,12 +75,14 @@ function shurloc_checkout_tools_bootstrap(): void {
 	/**
 	 * Payment labels.
 	 */
+
 	$payment_labels = new Shurloc_Payment_Gateway_Labels();
 	$payment_labels->register();
 
 	/**
 	 * Send new orders directly to Processing instead of On Hold.
 	 */
+
 	$offline_payment_status = new Shurloc_Offline_Payment_Status();
 	$offline_payment_status->register();
 }
