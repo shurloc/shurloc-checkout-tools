@@ -47,3 +47,7 @@ require_once __DIR__ . '/doubles/class-shurloc-test-cart.php';
 require_once __DIR__ . '/doubles/class-shurloc-test-session.php';
 require_once __DIR__ . '/doubles/class-shurloc-test-woocommerce.php';
 require_once __DIR__ . '/doubles/class-shurloc-test-admin-page.php';
+
+require_once __DIR__ . '/doubles/class-wc-email.php';
+require_once __DIR__ . '/doubles/class-wc-abstract-order.php';
+require_once __DIR__ . '/doubles/class-wc-order.php';
