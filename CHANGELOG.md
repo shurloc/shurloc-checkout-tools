@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.0] - 2026-08-19
+
+### Added
+
+- Added `PayPal/Venmo` as the checkout label for the PayPal gateway.
+- Added `Debit & Credit Cards (PayPal)` to the payment method row in admin New Order emails for PayPal card payments.
+- Added direct Processing status handling for NET30/check and Card on File/BACS orders.
+- Added automated coverage for payment gateway labels, email-context behavior, and offline payment status handling.
+
 ## [0.3.0] - 2026-08-15
 
 ### Added
