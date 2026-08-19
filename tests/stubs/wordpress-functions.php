@@ -510,3 +510,28 @@ if ( ! function_exists( 'admin_url' ) ) {
 		return 'https://example.com/wp-admin/' . ltrim( $path, '/' );
 	}
 }
+
+if ( ! function_exists( 'add_filter' ) ) {
+
+	/**
+	 * Registers a WordPress filter.
+	 *
+	 * @param string   $hook          Hook name.
+	 * @param callable $callback      Callback.
+	 * @param int      $priority      Hook priority.
+	 * @param int      $accepted_args Number of accepted arguments.
+	 */
+	function add_filter(
+		string $hook,
+		callable $callback,
+		int $priority = 10,
+		int $accepted_args = 1
+	): void {
+		$GLOBALS['shurloc_test_filters'][] = array(
+			'hook'          => $hook,
+			'callback'      => $callback,
+			'priority'      => $priority,
+			'accepted_args' => $accepted_args,
+		);
+	}
+}
