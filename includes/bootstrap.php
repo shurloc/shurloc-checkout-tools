@@ -75,6 +75,12 @@ function shurloc_checkout_tools_bootstrap(): void {
 	 */
 	$payment_labels = new Shurloc_Payment_Gateway_Labels();
 	$payment_labels->register();
+
+	/**
+	 * Send new orders directly to Processing instead of On Hold.
+	 */
+	$offline_payment_status = new Shurloc_Offline_Payment_Status();
+	$offline_payment_status->register();
 }
 
 add_action(
