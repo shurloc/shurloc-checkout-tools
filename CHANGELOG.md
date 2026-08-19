@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.1] - 2026-08-19
+
+### Changed
+
+- Guard against missing Shurloc_Admin_Page_Interface.
+
 ## [0.4.0] - 2026-08-19
 
 ### Added
