@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<ruleset name="Shur-Loc Checkout Tools">
+<ruleset name="Shur-loc Checkout Tools">
 
 	<description>
-		WordPress Coding Standards for the Shur-Loc Checkout Tools plugin.
+		WordPress Coding Standards for the Shur-loc Checkout Tools plugin.
 	</description>
 
 	<!-- Analyze code as PHP 8.4 -->
