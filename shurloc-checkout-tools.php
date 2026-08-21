@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin Name:       Shur-Loc Checkout Tools
+ * Plugin Name:       Shur-loc Checkout Tools
  * Plugin URI:        https://shurloc.com/
- * Description:       Checkout tools for the Shur-Loc website.
+ * Description:       Checkout tools for the Shur-loc website.
  * Version:           0.4.1
  * Requires at least: 7.0
  * Requires PHP:      8.4
  * Requires Plugins:  woocommerce, shurloc-tools
- * Author:            Shur-Loc
+ * Author:            Shur-loc
  * Author URI:        https://shurloc.com/
  * Text Domain:       shurloc-checkout-tools
  *

@@ -47,7 +47,7 @@ final class Shurloc_Settings {
 	 *
 	 * @var string
 	 */
-	private const DEFAULT_SEFAR_TARIFF_MESSAGE = 'Due to a 12% mesh tariff from Sefar, mesh orders will include a 9% tariff fee as a separate line item on invoices. Shur-Loc pays 3% of this tariff based on paying half of 6% for both Murakami and Saati sharing this cost to minimize industry impact and Shur-Loc will adjust if tariff conditions change. Thank you for your understanding.';
+	private const DEFAULT_SEFAR_TARIFF_MESSAGE = 'Due to a 12% mesh tariff from Sefar, mesh orders will include a 9% tariff fee as a separate line item on invoices. Shur-loc pays 3% of this tariff based on paying half of 6% for both Murakami and Saati sharing this cost to minimize industry impact and Shur-loc will adjust if tariff conditions change. Thank you for your understanding.';
 
 	/**
 	 * Gets whether the mesh tariff is enabled.
