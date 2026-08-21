@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.2] - 2026-08-21
+
+### Internal Improvements
+
+- Fixed branding in several files.
+- Updated README.
+- Added WooCommerce stubs to VS Code Intelephense configuration.
+
 ## [0.4.1] - 2026-08-19
 
 ### Changed
