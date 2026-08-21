@@ -59,7 +59,7 @@ final class ShurlocSettingsTest extends TestCase {
 					'sefar' => array(
 						'enabled' => true,
 						'rate'    => 9.0,
-						'message' => 'Due to a 12% mesh tariff from Sefar, mesh orders will include a 9% tariff fee as a separate line item on invoices. Shur-Loc pays 3% of this tariff based on paying half of 6% for both Murakami and Saati sharing this cost to minimize industry impact and Shur-Loc will adjust if tariff conditions change. Thank you for your understanding.',
+						'message' => 'Due to a 12% mesh tariff from Sefar, mesh orders will include a 9% tariff fee as a separate line item on invoices. Shur-loc pays 3% of this tariff based on paying half of 6% for both Murakami and Saati sharing this cost to minimize industry impact and Shur-loc will adjust if tariff conditions change. Thank you for your understanding.',
 					),
 				),
 			),
