@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Shur-loc Checkout Tools
- * Plugin URI:        https://shurloc.com/
+ * Plugin URI:        https://github.com/shurloc/shurloc-checkout-tools
  * Description:       Checkout tools for the Shur-loc website.
  * Version:           0.4.2
  * Requires at least: 7.0
