@@ -2,6 +2,8 @@
 
 Status captured: 2026-09-03 14:45 America/Los_Angeles
 
+Last updated: 2026-09-03
+
 This document records the current state of the mechanical migration from
 `shurloc-checkout-tools` into the `Checkout` domain of
 `shurloc-site-tools`. The detailed standing rules remain in `MIGRATION.md`.
@@ -89,6 +91,7 @@ Both repositories had clean working trees when this status was captured.
 | `includes/settings/class-shurloc-settings.php` | `includes/checkout/settings/class-settings.php` (`Settings`) |
 | `includes/checkout/class-shurloc-offline-payment-status.php` | `includes/checkout/integrations/class-offline-payment-status.php` (`Offline_Payment_Status`) |
 | `includes/checkout/class-shurloc-payment-gateway-labels.php` | `includes/checkout/integrations/class-payment-gateway-labels.php` (`Payment_Gateway_Labels`) |
+| `includes/checkout/class-shurloc-tariff-fees.php` | `includes/checkout/integrations/class-tariff-fees.php` (`Tariff_Fees`) |
 
 ### Tests Migrated
 
@@ -97,10 +100,15 @@ Both repositories had clean working trees when this status was captured.
 | `tests/settings/ShurlocSettingsTest.php` | `tests/checkout/settings/SettingsTest.php` |
 | `tests/checkout/ShurlocOfflinePaymentStatusTest.php` | `tests/checkout/integrations/OfflinePaymentStatusTest.php` |
 | `tests/checkout/ShurlocPaymentGatewayLabelsTest.php` | `tests/checkout/integrations/PaymentGatewayLabelsTest.php` |
+| `tests/checkout/ShurlocTariffFeesTest.php` | `tests/checkout/integrations/TariffFeesTest.php` |
 
 The payment gateway labels test was adapted to the existing Site Tools
 hook-indexed callback and metadata globals. Its targeted PHPUnit run passed 10
 tests and 21 assertions. Its destination PHPCS check also passed.
+
+The tariff fees test was adapted to the existing Site Tools WooCommerce global,
+test double, and hook-indexed action registry. Its targeted PHPUnit run passed
+14 tests and 14 assertions. Its destination PHPCS check also passed.
 
 ### Test Doubles Migrated
 
@@ -170,33 +178,28 @@ Site Tools already has the compatible `WC()` implementation described above.
 
 Recommended dependency-aware order:
 
-1. Migrate `includes/checkout/class-shurloc-tariff-fees.php` after confirming
-   its already-migrated `Settings` and test-double dependencies.
-2. Migrate `tests/checkout/ShurlocTariffFeesTest.php`, adapting it to
-   `Test_WooCommerce`, `$GLOBALS['shurloc_test_woocommerce']`, and the existing
-   hook registry.
-3. Migrate `includes/checkout/class-shurloc-payment-processing-fee.php`.
-4. Migrate `tests/checkout/ShurlocPaymentProcessingFeeTest.php`, adapting its
+1. Migrate `includes/checkout/class-shurloc-payment-processing-fee.php`.
+2. Migrate `tests/checkout/ShurlocPaymentProcessingFeeTest.php`, adapting its
    WooCommerce global, hook assertions, and script-enqueue assertions to Site
    Tools representations.
-5. Migrate `includes/frontend/class-shurloc-tariff-tooltips.php` into an
+3. Migrate `includes/frontend/class-shurloc-tariff-tooltips.php` into an
    appropriate Checkout frontend or integration namespace.
-6. Migrate `tests/frontend/ShurlocTariffTooltipsTest.php`, adapting shared stub
+4. Migrate `tests/frontend/ShurlocTariffTooltipsTest.php`, adapting shared stub
    representations where required.
-7. Migrate the three Checkout-specific assets into `assets/checkout/`:
+5. Migrate the three Checkout-specific assets into `assets/checkout/`:
    `tariff-tooltips.css`, `tariff-tooltips.js`, and
    `payment-processing-fee.js`. Each asset is a separate review unit unless
    explicitly grouped.
-8. Migrate `includes/admin/class-shurloc-settings-page.php` and its test.
-9. Migrate `includes/admin/class-shurloc-admin-page-controller.php`. There is
+6. Migrate `includes/admin/class-shurloc-settings-page.php` and its test.
+7. Migrate `includes/admin/class-shurloc-admin-page-controller.php`. There is
    no direct source test file; its behavior is exercised through the admin
    composition tests.
-10. Migrate `includes/admin/class-shurloc-admin-menu.php` and its test, using
+8. Migrate `includes/admin/class-shurloc-admin-menu.php` and its test, using
     the existing shared `Admin_Page_Interface` rather than recreating the old
     shared dependency.
-11. Create the Checkout domain `Bootstrap`, register all migrated Checkout
+9. Create the Checkout domain `Bootstrap`, register all migrated Checkout
     components, and add Checkout bootstrap tests.
-12. Wire the Checkout domain bootstrap into the root Site Tools bootstrap and
+10. Wire the Checkout domain bootstrap into the root Site Tools bootstrap and
     extend the root bootstrap tests.
 
 ### Remaining Supporting Work
