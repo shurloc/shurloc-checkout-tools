@@ -1,6 +1,6 @@
 # Checkout Tools Migration Status
 
-Status captured: 2026-09-03 14:45 America/Los_Angeles
+Status captured: 2026-09-03 16:30 America/Los_Angeles
 
 Last updated: 2026-09-03
 
@@ -44,9 +44,9 @@ This document records the current state of the mechanical migration from
   dependency instead of migrating the file.
 - Provide the actual direct source-versus-destination diff for every migrated
   file. For a new file without a source counterpart, show a `/dev/null` diff.
-- Do not perform the abandoned JavaScript formatting work. The migrated assets
-  remain mechanical copies apart from the already approved `"use strict";`
-  addition to the payment-processing-fee script.
+- Do not perform the abandoned JavaScript formatting work. The migrated asset
+  bodies remain mechanical copies; only the required Site Tools headers and
+  destination filenames differ from the source assets.
 - Staging testing and release work are out of scope.
 
 ## Decisions Made
@@ -98,11 +98,14 @@ This document records the current state of the mechanical migration from
 | `includes/admin/class-shurloc-admin-page-controller.php` | `includes/checkout/admin/class-admin-page-controller.php` (`Admin_Page_Controller`) |
 | `includes/admin/class-shurloc-admin-menu.php` | `includes/checkout/admin/class-admin-menu.php` (`Admin_Menu`) |
 | `includes/bootstrap.php` composition | `includes/checkout/class-bootstrap.php` (`Bootstrap`) |
+| Checkout domain registration | Existing root `includes/bootstrap.php` |
 
 The Checkout domain bootstrap composes and registers all migrated settings,
 admin, tariff, frontend, payment-fee, payment-label, and offline-status
 components. It intentionally does not duplicate root autoloader or
-`plugins_loaded` responsibilities.
+`plugins_loaded` responsibilities. The root Site Tools bootstrap now imports,
+instantiates, and registers the Checkout domain bootstrap immediately after
+registering the root autoloader. Its destination PHPCS check passed.
 
 ### Tests Migrated or Added
 
@@ -176,17 +179,15 @@ shared representation.
 
 Recommended dependency-aware order:
 
-1. Wire `Shurloc\SiteTools\Checkout\Bootstrap` into
-   `includes/bootstrap.php` as a separate review unit.
-2. Extend `tests/BootstrapTest.php` to verify Checkout domain registration as
-   the following test review unit.
-3. Review whether the migration status document itself needs a final filename
+1. Extend `tests/BootstrapTest.php` to verify Checkout domain registration as
+   the next test review unit.
+2. Review whether the migration status document itself needs a final filename
    or timestamp adjustment.
-4. Perform the mechanical migration audit defined in `MIGRATION.md`, including
+3. Perform the mechanical migration audit defined in `MIGRATION.md`, including
    namespace, class-prefix, package, text-domain, old-path, and source-tree
    inventory checks.
-5. Run the final complete PHPUnit and PHPCS suites after root bootstrap wiring
-   and the audit are complete. PHPStan remains omitted.
+4. Run the final complete PHPUnit and PHPCS suites after the root bootstrap
+   test and audit are complete. PHPStan remains omitted.
 
 Do not independently copy the standalone Checkout Tools constants, autoloader,
 `tests/phpstan-bootstrap.php`, procedural bootstrap, or plugin entry point unless
