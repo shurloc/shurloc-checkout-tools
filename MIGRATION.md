@@ -9,6 +9,13 @@ standalone `shurloc-checkout-tools` plugin into the `Checkout` domain of
 The source plugin is the authoritative reference for behavior. The goal
 is consolidation, not refactoring.
 
+## Document Encoding
+
+This document is encoded as UTF-8 without a byte-order mark (BOM). Open
+or save it using UTF-8 so its arrows and directory-tree diagrams render
+correctly. Tools that default to a legacy Windows code page must be
+configured to read UTF-8 for this file.
+
 ## Repository Roles
 
 When both repositories are open in the same VS Code multi-root
@@ -27,23 +34,27 @@ The following project-specific clarifications apply to this migration:
 
 - The authoritative source is the current `shurloc-checkout-tools`
   working tree. It is expected to be identical to the v0.4.2 tag except
-  for this migration document.
+  for this migration document. Treat that working tree as authoritative;
+  do not verify it against the tag as a prerequisite for migration.
 - The migration targets the current `shurloc-site-tools` working tree.
   The destination should not contain pre-existing uncommitted changes
   when migration work begins.
 - Migrated class and interface names should drop the `Shurloc_` prefix;
   the destination namespace replaces that prefix.
 - Before adding `declare( strict_types=1 );` to a migrated file that does
-  not already contain it, obtain explicit approval.
+  not already contain it, pause and obtain explicit approval. Its absence
+  is a mandatory review point.
 - Persisted identifiers may be reviewed case by case. A separate
   up-front identifier inventory is not required.
 - The assignment covers code consolidation and verification only. It
-  does not include staging verification or the release process.
+  does not include staging verification or the release process. Staging
+  testing and releasing Site Tools are explicitly out of scope.
 - Do not add coexistence, upgrade, deactivation, or other safeguards for
   installations where both plugins may be active. Only consolidate the
   existing code.
 - Change exactly one filesystem file at a time, then stop for review and
-  approval before changing another file.
+  explicit approval before changing another file, unless instructed
+  otherwise.
 - Production files, tests, data providers, stubs, bootstraps, and all
   other supporting files each count as separate filesystem files and
   therefore require separate review steps.
@@ -378,8 +389,9 @@ Use dependency-first migration order.
 14. Extend root bootstrap tests.
 15. Perform a mechanical migration audit.
 16. Run the complete test/static-analysis/coding-standard suite.
-17. Test on staging.
-18. Cut a Site Tools release.
+
+Staging testing and the Site Tools release process are out of scope for
+this assignment.
 
 If the actual source dependency graph indicates a slightly different
 file order, follow the source dependencies while preserving this overall
@@ -426,9 +438,12 @@ the Checkout bootstrap alongside the existing domains.
 Do not wire Checkout into the root bootstrap until its component-level
 migration is complete and its domain bootstrap tests are green.
 
-## Release Discipline
+## Release Discipline (Out of Scope)
 
 Do not mix unrelated improvements into the Checkout migration release.
+
+The following requirements are for the eventual release owner; they are
+not tasks in this migration assignment.
 
 Before release:
 
